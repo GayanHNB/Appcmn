@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Planner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #E1F5FE; /* Light Blue */
+            color: #0277BD; /* Dark Blue */
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 18px;
+            color: white;
+            background: #0288D1; /* Light blue */
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .button:hover {
+            background: #01579B; /* Darker blue */
+            transform: scale(1.05);
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #0277BD;
+            padding: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                padding: 10px;
+            }
+            .button {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Personal Finance Planner</h2>
+        
+        <button class="button" onclick="addIncome()">Add Income</button>
+        <table id="incomeTable">
+            <tr>
+                <th>Type of Income</th>
+                <th>Amount (LKR)</th>
+            </tr>
+        </table>
+        <p>Total Income: <span id="totalIncome">0</span> LKR</p>
+        
+        <button class="button" onclick="addFixedExpense()">Add Fixed Expense</button>
+        <table id="fixedExpenseTable">
+            <tr>
+                <th>Fixed Expenses</th>
+                <th>Amount (LKR)</th>
+            </tr>
+        </table>
+        <p>Total Fixed Expenses: <span id="totalFixedExpenses">0</span> LKR</p>
+        
+        <button class="button" onclick="addDayToDayExpense()">Add Day-to-Day Expense</button>
+        <table id="dayToDayExpenseTable">
+            <tr>
+                <th>Day-to-Day Expenses</th>
+                <th>Amount (LKR)</th>
+            </tr>
+        </table>
+        <p>Total Day-to-Day Expenses: <span id="totalDayToDayExpenses">0</span> LKR</p>
+        
+        <h3>Available Budget: <span id="availableBudget">0</span> LKR</h3>
+        
+        <h3>Plan Your Future and Achieve Your Dreams</h3>
+        <p>Want to plan for your Wedding? Buy your Dream Vehicle? Start an MBA? Click on the relevant button below!</p>
+        
+        <a href="https://www.hnb.net/investment-plans" class="button">💡 HNB Investment Plans (Start your Future Today)</a>
+        <a href="https://www.hnb.net/personal/leasing/leasings" class="button">🚗 HNB Vehicle Leasing (Drive Your Dream Car)</a>
+        <a href="https://www.hnb.net/personal" class="button">🏠 If you want to save, here are deposit-based options</a>
+        <a href="https://www.hnb.net/pawning" class="button">💰 Pawn Gold for Urgent Needs</a>
+        <a href="https://www.hnb.net/personal/cards" class="button">💳 HNB Credit Cards (Financial Flexibility)</a>
+    </div>
+
+    <script>
+        function addIncome() {
+            addRow("incomeTable", "totalIncome");
+            calculateBudget();
+        }
+
+        function addFixedExpense() {
+            addRow("fixedExpenseTable", "totalFixedExpenses");
+            calculateBudget();
+        }
+
+        function addDayToDayExpense() {
+            addRow("dayToDayExpenseTable", "totalDayToDayExpenses");
+            calculateBudget();
+        }
+
+        function addRow(tableId, totalId) {
+            let table = document.getElementById(tableId);
+            let row = table.insertRow(-1);
+            let cell1 = row.insertCell(0);
+            let cell2 = row.insertCell(1);
+            cell1.innerHTML = '<input type="text" placeholder="Enter description">';
+            cell2.innerHTML = '<input type="number" placeholder="0" oninput="calculateTotal(\'' + tableId + '\', \'' + totalId + '\')">';
+        }
+
+        function calculateTotal(tableId, totalId) {
+            let table = document.getElementById(tableId);
+            let inputs = table.getElementsByTagName("input");
+            let total = 0;
+            for (let i = 0; i < inputs.length; i++) {
+                if (inputs[i].type === "number" && inputs[i].value) {
+                    total += parseFloat(inputs[i].value);
+                }
+            }
+            document.getElementById(totalId).innerText = total;
+            calculateBudget();
+        }
+
+        function calculateBudget() {
+            let totalIncome = parseFloat(document.getElementById("totalIncome").innerText) || 0;
+            let totalFixedExpenses = parseFloat(document.getElementById("totalFixedExpenses").innerText) || 0;
+            let totalDayToDayExpenses = parseFloat(document.getElementById("totalDayToDayExpenses").innerText) || 0;
+            let availableBudget = totalIncome - (totalFixedExpenses + totalDayToDayExpenses);
+            document.getElementById("availableBudget").innerText = availableBudget;
+        }
+    </script>
+</body>
+</html>
