@@ -7,10 +7,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #E1F5FE; /* Light Blue */
-            color: #0277BD; /* Dark Blue */
-            margin: 0;
-            padding: 0;
+            background-color: #E1F5FE;
+            color: #0277BD;
             text-align: center;
         }
         .container {
@@ -29,17 +27,16 @@
             margin: 10px 0;
             font-size: 18px;
             color: white;
-            background: #0288D1; /* Light blue */
+            background-color: #4FC3F7; /* Light Blue */
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
         }
         .button:hover {
-            background: #01579B; /* Darker blue */
-            transform: scale(1.05);
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+            background-color: #0288D1; /* Darker Blue on Hover */
+            box-shadow: 3px 5px 8px rgba(0, 0, 0, 0.3);
         }
         table {
             width: 100%;
@@ -50,20 +47,36 @@
             border: 1px solid #0277BD;
             padding: 8px;
         }
-        input {
+        input, select {
             width: 100%;
             padding: 5px;
-            box-sizing: border-box;
         }
-        @media (max-width: 600px) {
-            .container {
-                width: 100%;
-                padding: 10px;
-            }
-            .button {
-                font-size: 16px;
-                padding: 12px;
-            }
+        .future-plan {
+            margin-top: 20px;
+            padding: 15px;
+            background: #B3E5FC;
+            border-radius: 10px;
+        }
+        .future-plan h3 {
+            color: #0277BD;
+        }
+        .plan-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            font-size: 16px;
+            color: white;
+            background-color: #4FC3F7; /* Light Blue */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+        .plan-button:hover {
+            background-color: #0288D1; /* Darker Blue on Hover */
+            box-shadow: 3px 5px 8px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
@@ -76,6 +89,7 @@
             <tr>
                 <th>Type of Income</th>
                 <th>Amount (LKR)</th>
+                <th>Action</th>
             </tr>
         </table>
         <p>Total Income: <span id="totalIncome">0</span> LKR</p>
@@ -85,6 +99,7 @@
             <tr>
                 <th>Fixed Expenses</th>
                 <th>Amount (LKR)</th>
+                <th>Action</th>
             </tr>
         </table>
         <p>Total Fixed Expenses: <span id="totalFixedExpenses">0</span> LKR</p>
@@ -94,45 +109,86 @@
             <tr>
                 <th>Day-to-Day Expenses</th>
                 <th>Amount (LKR)</th>
+                <th>Action</th>
             </tr>
         </table>
         <p>Total Day-to-Day Expenses: <span id="totalDayToDayExpenses">0</span> LKR</p>
         
         <h3>Available Budget: <span id="availableBudget">0</span> LKR</h3>
-        
-        <h3>Plan Your Future and Achieve Your Dreams</h3>
-        <p>Want to plan for your Wedding? Buy your Dream Vehicle? Start an MBA? Click on the relevant button below!</p>
-        
-        <a href="https://www.hnb.net/investment-plans" class="button">💡 HNB Investment Plans (Start your Future Today)</a>
-        <a href="https://www.hnb.net/personal/leasing/leasings" class="button">🚗 HNB Vehicle Leasing (Drive Your Dream Car)</a>
-        <a href="https://www.hnb.net/personal" class="button">🏠 If you want to save, here are deposit-based options</a>
-        <a href="https://www.hnb.net/pawning" class="button">💰 Pawn Gold for Urgent Needs</a>
-        <a href="https://www.hnb.net/personal/cards" class="button">💳 HNB Credit Cards (Financial Flexibility)</a>
+
+        <div class="future-plan">
+            <h3>Plan Your Future and Achieve Your Dreams</h3>
+            <p>Want to plan for your Wedding? Buy your Dream Vehicle? Start an MBA? Click on the relevant button below!</p>
+            <button class="plan-button" onclick="redirect('https://www.hnb.net/personal/savings/investment-plans')">💡 HNB Investment Plans (Start Your Future Today)</button>
+            <button class="plan-button" onclick="redirect('https://www.hnb.net/personal/leasing/leasings')">🚗 HNB Vehicle Leasing (Drive Your Dream Car)</button>
+            <button class="plan-button" onclick="redirect('https://www.hnb.net/personal/savings/general-savings/money-market-savings-account')">🏠 Deposit-Based Savings Options</button>
+            <button class="plan-button" onclick="redirect('https://www.hnb.net/pawning')">💰 Pawn Gold for Urgent Needs</button>
+            <button class="plan-button" onclick="redirect('https://www.hnb.net/personal/cards')">💳 HNB Credit Cards (Manage Your Finances with Flexible Payment Schemes)</button>
+            <button class="plan-button" onclick="redirect('https://www.hnb.net/personal/loans/home-loans')">🏡 HNB Home Loans (Buy Your Dream Home)</button>
+        </div>
     </div>
 
     <script>
+        // Predefined suggestions
+        const incomeSuggestions = [
+            "Salary", "Business Income", "Investment Income", "Freelance Work", "Rental Income",
+            "Consulting Fees", "Commission", "Royalties", "Side Business", "Online Sales"
+        ];
+        const fixedExpenseSuggestions = [
+            "Rent", "Electricity", "Water", "Loan Repayment", "Insurance", "School Fees", "Phone Bill",
+            "Subscriptions", "Gym Membership", "Internet", "Car Loan", "Mortgage"
+        ];
+        const dayToDayExpenseSuggestions = [
+            "Groceries", "Transport", "Dining Out", "Entertainment", "Health", "Shopping", "Fuel", 
+            "Clothing", "Personal Care", "Takeout", "Coffee", "Snacks", "Hobbies"
+        ];
+
         function addIncome() {
-            addRow("incomeTable", "totalIncome");
-            calculateBudget();
+            addRow("incomeTable", "totalIncome", incomeSuggestions);
         }
 
         function addFixedExpense() {
-            addRow("fixedExpenseTable", "totalFixedExpenses");
-            calculateBudget();
+            addRow("fixedExpenseTable", "totalFixedExpenses", fixedExpenseSuggestions);
         }
 
         function addDayToDayExpense() {
-            addRow("dayToDayExpenseTable", "totalDayToDayExpenses");
-            calculateBudget();
+            addRow("dayToDayExpenseTable", "totalDayToDayExpenses", dayToDayExpenseSuggestions);
         }
 
-        function addRow(tableId, totalId) {
+        function addRow(tableId, totalId, suggestions) {
             let table = document.getElementById(tableId);
             let row = table.insertRow(-1);
             let cell1 = row.insertCell(0);
             let cell2 = row.insertCell(1);
-            cell1.innerHTML = '<input type="text" placeholder="Enter description">';
+            let cell3 = row.insertCell(2);
+
+            // Input field for Type of Expense with suggestions
+            let input = document.createElement("input");
+            input.setAttribute("list", tableId + "Suggestions");
+            input.placeholder = "Enter Type";
+            cell1.appendChild(input);
+            
+            // Data list for suggestions
+            let datalist = document.createElement("datalist");
+            datalist.id = tableId + "Suggestions";
+            suggestions.forEach(suggestion => {
+                let option = document.createElement("option");
+                option.value = suggestion;
+                datalist.appendChild(option);
+            });
+            document.body.appendChild(datalist);
+
+            // Amount field
             cell2.innerHTML = '<input type="number" placeholder="0" oninput="calculateTotal(\'' + tableId + '\', \'' + totalId + '\')">';
+            
+            // Delete button
+            cell3.innerHTML = '<button onclick="deleteRow(this, \'' + tableId + '\', \'' + totalId + '\')">Delete</button>';
+        }
+
+        function deleteRow(button, tableId, totalId) {
+            let row = button.parentElement.parentElement;
+            row.remove();
+            calculateTotal(tableId, totalId);
         }
 
         function calculateTotal(tableId, totalId) {
@@ -155,6 +211,11 @@
             let availableBudget = totalIncome - (totalFixedExpenses + totalDayToDayExpenses);
             document.getElementById("availableBudget").innerText = availableBudget;
         }
+
+        function redirect(url) {
+            window.open(url, "_blank");
+        }
     </script>
+
 </body>
 </html>
